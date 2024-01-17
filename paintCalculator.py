@@ -85,7 +85,6 @@ def getTotalArea():
     
     return totalArea
     
-#TODO: allow 2 decimal places for size inputs
 
 area = getTotalArea()
 print()
@@ -93,6 +92,15 @@ litresByArea = area / 10 # 10m^2 per litre based on B&Q paint calculator
 
 coats = getCoats()
 print()
-litresByCoats = round(litresByArea * coats, 2)
-litres = litresByCoats if litresByCoats > 0 else 0
-print(f"Litres: {litresByCoats}")
+litresToClean = litresByArea * coats
+
+wastage = input("Include 10% wastage?(Y/N)\nIt is recommended to purchase at least 10% extra product to allow for errors and damages\n").strip()
+while "y" not in wastage.lower() and "n" not in wastage.lower():
+    wastage = input("Please enter 'Y' or 'N'")
+
+if 'y' in wastage.lower():
+    litresToClean *= 1.1
+        
+
+litres = round(litresToClean, 2) if litresToClean > 0 else 0
+print(f"Litres: {litres}")
