@@ -1,12 +1,10 @@
 import math
 
-
 # Ensures the input is a valid integer
 def getValidInteger(value):
     while not value.isnumeric():
-        value = input(f"please enter a valid number: ")
+        value = input(f"please enter a valid number: ").strip()
     return int(value)
-
 
 # Checks if a string is a float value
 def is_float(string):
@@ -16,19 +14,16 @@ def is_float(string):
     except ValueError:
         return False
 
-
 # Check if a size based input is in the correct format
 def getValidSize(value):
     while (not is_float(value) or len(value.rsplit('.')[-1]) > 2) or float(value) <= 0:
         value = input(f"please enter a valid number greater than 0 with at most 2 decimal places: ")
     return float(value)
 
-
 # Get the size value of a given dimension
 def getSize(dimension):
-    size = input(f"{dimension}? ").strip()
+    size = input(f"{dimension} (meters)? ").strip()
     return getValidSize(size)
-
 
 # Get the number of coats wanted per user
 def getCoats():
@@ -38,27 +33,25 @@ def getCoats():
     coats = getValidInteger(coats)
 
     while coats not in options:
-        coats = input(f"The number of coats must be between 1 and 3: ")
+        coats = input(f"The number of coats must be between 1 and 3: ").strip()
         coats = getValidInteger(coats)
 
     return coats
 
-
 # Calculate the area of all doors/windows in a room
 def getGaps(roomIndex, wallIndex):
-    gaps = input("\nHow many doors/windows does this wall have? ")
+    gaps = input("\nHow many doors/windows/obstructions does this wall have? ").strip()
     gaps = getValidInteger(gaps)
 
     totalArea = 0
 
     for i in range(gaps):
-        print(f"\nRoom {roomIndex}, Wall {wallIndex}, Door/Window {i+1}")
+        print(f"\nRoom {roomIndex}, Wall {wallIndex}, Door/Window/Obstruction {i+1}")
         width = getSize("Width")
         height = getSize("Height")
         totalArea += width * height
 
     return totalArea
-
 
 # Calculate the area of a wall
 def getWall(roomIndex, wallIndex):
@@ -69,11 +62,10 @@ def getWall(roomIndex, wallIndex):
 
     return (width * height) - gaps
 
-
 # Calculate the area of a room
 def getRoom(roomIndex):
     print(f"\nRoom {roomIndex}")
-    walls = input("How many walls need painting? ")
+    walls = input("How many walls need painting? ").strip()
     walls = getValidInteger(walls)
 
     totalArea = 0
@@ -82,10 +74,9 @@ def getRoom(roomIndex):
 
     return totalArea
 
-
 # Calculate the total area between all rooms
 def getTotalArea():
-    rooms = input("How many rooms need painting? ")
+    rooms = input("How many rooms need painting? ").strip()
     rooms = getValidInteger(rooms)
 
     totalArea = 0
@@ -96,10 +87,9 @@ def getTotalArea():
 
 # Get the users desired paint brand
 def getBrandSuggestion(paints, volume):
-    # TODO: Give cost insight for each brand
     print("\nWhich brand of paint would you like to choose? \n0. Any")
-    paintList = list(paints)
-    paintOptions = list(range(len(paintList) + 1))
+    paintList = list(paints) # convert dictionary to list of keys
+    paintOptions = list(range(len(paintList) + 1)) # get list of possible user inputs
     for i in range(len(paintOptions) - 1):
         canOptions = paints[paintList[i]]
         averages = 0
@@ -109,13 +99,12 @@ def getBrandSuggestion(paints, volume):
         
         print(f"{i+1}. {paintList[i]}: average of £{round(averages, 2)} per litre")
 
-    brand = input("Choice: ")
+    brand = input("Choice: ").strip()
     brand = getValidInteger(brand)
     while brand not in paintOptions:
-        brand = input("Please choose a valid option: ")
+        brand = input("Please choose a valid option: ").strip()
         brand = getValidInteger(brand)
     return paintList[brand-1] if brand != 0 else None
-
 
 # Generate paint suggestions
 def getPaintSuggestion(paints, desiredBrand, volume):
@@ -152,10 +141,11 @@ print("""
 Welcome to the Console Paint Calculator! 
 This handy tool is designed to make your painting projects a breeze by providing quick and easy calculations for the amount of paint you'll need. 
 Whether you're sprucing up a room or tackling a larger project, our console-based calculator will help you determine the right amount of paint, 
-saving you time and ensuring a smooth painting experience. Let's get started on transforming your space with the perfect amount of paint!""")
+saving you time and ensuring a smooth painting experience. Let's get started on transforming your space with the perfect amount of paint!
+""")
 
 area = getTotalArea()
-litresByArea = area / 10 # 10m^2 per litre based on B&Q paint calculator
+litresByArea = area / 10 # 1 litre per 10m^2 based on B&Q and homebase paint calculators
 
 coats = getCoats()
 litresToClean = litresByArea * coats
@@ -167,23 +157,24 @@ while "y" not in wastage.lower() and "n" not in wastage.lower():
 if 'y' in wastage.lower():
     litresToClean *= 1.1
 
-
 litres = round(litresToClean, 2) if litresToClean >= 0 else 0
 
 if litres > 0:
+    print(f"\nTo cover this area, you need {litres} litre{"s" if litres != 1 else ""} of paint")
     # (litres, cost)
     paints = {
         "Dulux": ((1, 17), (2.5, 22), (5, 34)),
         "Dulux Trade": ((1, 20), (2.5, 34), (5, 60)),
-        "Bedec": ((1, 26.96), (2.5, 55), (5, 63.7)),
+        "Crown": ((1, 20.56), (2.5, 27.42), (5, 56.44)),
     }
 
-    print(f"\nTo cover this area, you need {litres} litres of paint")
     brand = getBrandSuggestion(paints, litres)
     suggestion, cost = getPaintSuggestion(paints, brand, litres)
+    
     brand = suggestion[0]
     volume = suggestion[1]
     cans = suggestion[2]
+    
     print(f"\nIt is suggested that you buy {cans} can{"s" if cans > 1 else ""} of {volume}L {brand} paint for £{cost}")
 else:
     print(f"\nYou do not need to buy any paint")
