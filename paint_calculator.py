@@ -20,6 +20,7 @@ def is_float(string):
     except ValueError:
         return False
 
+# Checks if a string is an integer value
 def is_integer(string):
     try:
         int(string)
@@ -53,6 +54,7 @@ def getCoats():
 
 # Calculate the area of all doors/windows in a room
 def getTotalGapsArea(roomIndex, wallIndex):
+    # TODO: allow for different shaped obstruction
     gaps = input("\nHow many doors/windows/obstructions does this wall have? ").strip()
     gaps = getValidPositiveIntiger(gaps)
 
@@ -110,6 +112,7 @@ def getBrandSuggestion(paints, volume):
             averages += (1 / option[0]) * option[1]
         averages /= len(option)
         
+        # TODO: Give an output of all paint options per brand, not just the average cost per litre
         print(f"{i+1}. {paintList[i]}: average of £{round(averages, 2)} per litre")
 
     brand = input("Choice: ").strip()
@@ -121,6 +124,7 @@ def getBrandSuggestion(paints, volume):
 
 # Generate paint suggestions
 def getPaintSuggestion(paints, desiredBrand, volume):
+    # TODO: Need to find the best combination of containers for the lowest cost, not just the cheapest outcome
     lowestCost = 0
     suggestion = []
 
@@ -158,6 +162,7 @@ Whether you're sprucing up a room or tackling a larger project, our console-base
 saving you time and ensuring a smooth painting experience. Let's get started on transforming your space with the perfect amount of paint!
     """)
 
+    # TODO: have soft and hard limit for the number of rooms, walls and obstructions
     area = getTotalArea()
     litresByArea = area / 10 # 1 litre per 10m^2 based on B&Q and homebase paint calculators
 
