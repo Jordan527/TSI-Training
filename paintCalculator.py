@@ -2,14 +2,26 @@ import math
 
 # Ensures the input is a valid integer
 def getValidInteger(value):
-    while not value.isnumeric():
-        value = input(f"please enter a valid number: ").strip()
+    while not is_integer(value):
+        value = input("Please enter a whole number: ").strip()
+    return int(value)
+
+def getValidPositiveIntiger(value):
+    while not is_integer(value) or int(value) < 0:
+        value = input("Please enter a whole number greater than 0: ").strip()
     return int(value)
 
 # Checks if a string is a float value
 def is_float(string):
     try:
         float(string)
+        return True
+    except ValueError:
+        return False
+
+def is_integer(string):
+    try:
+        int(string)
         return True
     except ValueError:
         return False
@@ -39,9 +51,9 @@ def getCoats():
     return coats
 
 # Calculate the area of all doors/windows in a room
-def getGaps(roomIndex, wallIndex):
+def getTotalGapsArea(roomIndex, wallIndex):
     gaps = input("\nHow many doors/windows/obstructions does this wall have? ").strip()
-    gaps = getValidInteger(gaps)
+    gaps = getValidPositiveIntiger(gaps)
 
     totalArea = 0
 
@@ -54,34 +66,34 @@ def getGaps(roomIndex, wallIndex):
     return totalArea
 
 # Calculate the area of a wall
-def getWall(roomIndex, wallIndex):
+def getWallArea(roomIndex, wallIndex):
     print(f"\nRoom {roomIndex}, Wall {wallIndex}")
     width = getSize("Width")
     height = getSize("Height")
-    gaps = getGaps(roomIndex, wallIndex)
+    gaps = getTotalGapsArea(roomIndex, wallIndex)
 
     return (width * height) - gaps
 
 # Calculate the area of a room
-def getRoom(roomIndex):
+def getRoomArea(roomIndex):
     print(f"\nRoom {roomIndex}")
     walls = input("How many walls need painting? ").strip()
-    walls = getValidInteger(walls)
+    walls = getValidPositiveIntiger(walls)
 
     totalArea = 0
     for i in range(walls):
-        totalArea += getWall(roomIndex, i+1)
+        totalArea += getWallArea(roomIndex, i+1)
 
     return totalArea
 
 # Calculate the total area between all rooms
 def getTotalArea():
     rooms = input("How many rooms need painting? ").strip()
-    rooms = getValidInteger(rooms)
+    rooms = getValidPositiveIntiger(rooms)
 
     totalArea = 0
     for i in range(rooms):
-        totalArea += getRoom(i+1)
+        totalArea += getRoomArea(i+1)
 
     return totalArea
 
@@ -147,17 +159,20 @@ saving you time and ensuring a smooth painting experience. Let's get started on 
 area = getTotalArea()
 litresByArea = area / 10 # 1 litre per 10m^2 based on B&Q and homebase paint calculators
 
-coats = getCoats()
-litresToClean = litresByArea * coats
+if litresByArea != 0:
+    coats = getCoats()
+    litresByCoat = litresByArea * coats
 
-wastage = input("\nInclude 10% wastage?(Y/N)\nIt is recommended to purchase at least 10% extra product to allow for errors and damages\n").strip()
-while "y" not in wastage.lower() and "n" not in wastage.lower():
-    wastage = input("Please enter 'Y' or 'N'")
+    wastage = input("\nInclude 10% wastage?(Y/N)\nIt is recommended to purchase at least 10% extra product to allow for errors and damages\n").strip()
+    while "y" not in wastage.lower() and "n" not in wastage.lower():
+        wastage = input("Please enter 'Y' or 'N': ")
 
-if 'y' in wastage.lower():
-    litresToClean *= 1.1
+    if 'y' in wastage.lower():
+        litresByCoat *= 1.1
 
-litres = round(litresToClean, 2) if litresToClean >= 0 else 0
+    litres = round(litresByCoat, 2) if litresByCoat >= 0 else 0
+else:
+    litres = 0
 
 if litres > 0:
     print(f"\nTo cover this area, you need {litres} litre{"s" if litres != 1 else ""} of paint")
