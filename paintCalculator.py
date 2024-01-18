@@ -83,20 +83,29 @@ def getTotalArea():
     
     return totalArea
 
-# Generate paint suggestions
-def getPaintSuggestion(volume):        
-    # (litres, cost)
-    paints = {
-        "Dulux": ((2.5, 22), (5, 34)),
-        "GoodHome": ((0.05, 2.25), (2.5, 16), (5, 22)),
-    }
+def getBrandSuggestion(paints, volume):
+    # TODO: Give cost insight for each brand
+    print("\nWhich brand of paint would you like to choose?\n0. Any")
+    paintList = list(paints)
+    options = list(range(len(paintList) + 1))
+    for i in range(len(options) - 1):
+        print(f"{i+1}. {paintList[i]}")
+        
+    brand = input()
+    brand = getValidInteger(brand)
     
+    while brand not in options:
+        brand = input("Please choose a valid option: ")
+        brand = getValidInteger(brand)
+    return paintList[brand-1] if brand != 0 else None
+
+# Generate paint suggestions
+def getPaintSuggestion(paints, brand, volume):    
     lowestCost = 0
     suggestion = []
     
-    for brand in paints:
-        options = paints[brand]
-        for option in options:
+    if brand:
+        for option in paints[brand]:
             optionLitres = option[0]
             optionCost = option[1]
             
@@ -105,6 +114,18 @@ def getPaintSuggestion(volume):
             if lowestCost == 0 or lowestCost > cost:
                 lowestCost = cost
                 suggestion = [brand, optionLitres, containers]
+    else:
+        for brand in paints:
+            options = paints[brand]
+            for option in options:
+                optionLitres = option[0]
+                optionCost = option[1]
+                
+                containers = math.ceil(volume / optionLitres)
+                cost = containers * optionCost
+                if lowestCost == 0 or lowestCost > cost:
+                    lowestCost = cost
+                    suggestion = [brand, optionLitres, containers]
     
     return suggestion, lowestCost
             
@@ -126,13 +147,21 @@ if 'y' in wastage.lower():
         
 
 litres = round(litresToClean, 2) if litresToClean >= 0 else 0
-print(f"\nLitres: {litres}")
 
-if litres > 0:
-    suggestion, cost = getPaintSuggestion(litres)
+if litres > 0:  
+    # (litres, cost)
+    paints = {
+        "Dulux": ((2.5, 22), (5, 34)),
+        "GoodHome": ((0.05, 2.25), (2.5, 16), (5, 22)),
+        "Laura Ashley": ((0.1, 5), (2.5, 42), (5, 74)),
+    }
+    
+    print(f"\nTo cover this area, you need {litres} litres of paint")
+    brand = getBrandSuggestion(paints, litres)
+    suggestion, cost = getPaintSuggestion(paints, brand, litres)
     brand = suggestion[0]
     volume = suggestion[1]
     cans = suggestion[2]
-    print(f"It is suggested that you buy {cans} can{"s " if cans > 1 else " "}of {volume if volume >= 1 else int(volume * 1000)}{"L" if volume >= 1 else "ml"} {brand} paint for £{cost}")
+    print(f"\nIt is suggested that you buy {cans} can{"s" if cans > 1 else ""} of {volume if volume >= 1 else int(volume * 1000)}{"L" if volume >= 1 else "ml"} {brand} paint for £{cost}")
 else:
-    print(f"You do not need to buy any paint")
+    print(f"\nYou do not need to buy any paint")
