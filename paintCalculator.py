@@ -6,6 +6,7 @@ def getValidInteger(value):
         value = input("Please enter a whole number: ").strip()
     return int(value)
 
+# Check if a string is a valid positive integer
 def getValidPositiveIntiger(value):
     while not is_integer(value) or int(value) < 0:
         value = input("Please enter a whole number greater than 0: ").strip()
@@ -28,7 +29,7 @@ def is_integer(string):
 
 # Check if a size based input is in the correct format
 def getValidSize(value):
-    while (not is_float(value) or len(value.rsplit('.')[-1]) > 2) or float(value) <= 0:
+    while (not is_float(value) or (not is_integer(value) and len(value.rsplit('.')[-1]) > 2)) or float(value) <= 0:
         value = input(f"please enter a valid number greater than 0 with at most 2 decimal places: ")
     return float(value)
 
@@ -149,47 +150,45 @@ def getPaintSuggestion(paints, desiredBrand, volume):
     return suggestion, lowestCost
 
 
-print("""
+if __name__ == "__main__":
+    print("""
 Welcome to the Console Paint Calculator! 
 This handy tool is designed to make your painting projects a breeze by providing quick and easy calculations for the amount of paint you'll need. 
 Whether you're sprucing up a room or tackling a larger project, our console-based calculator will help you determine the right amount of paint, 
 saving you time and ensuring a smooth painting experience. Let's get started on transforming your space with the perfect amount of paint!
-""")
+    """)
 
-area = getTotalArea()
-litresByArea = area / 10 # 1 litre per 10m^2 based on B&Q and homebase paint calculators
+    area = getTotalArea()
+    litresByArea = area / 10 # 1 litre per 10m^2 based on B&Q and homebase paint calculators
 
-if litresByArea != 0:
-    coats = getCoats()
-    litresByCoat = litresByArea * coats
+    if litresByArea > 0:
+        coats = getCoats()
+        litresByCoat = litresByArea * coats
 
-    wastage = input("\nInclude 10% wastage?(Y/N)\nIt is recommended to purchase at least 10% extra product to allow for errors and damages\n").strip()
-    while "y" not in wastage.lower() and "n" not in wastage.lower():
-        wastage = input("Please enter 'Y' or 'N': ")
+        wastage = input("\nInclude 10% wastage?(Y/N)\nIt is recommended to purchase at least 10% extra product to allow for errors and damages\n").strip()
+        while "y" not in wastage.lower() and "n" not in wastage.lower():
+            wastage = input("Please enter 'Y' or 'N': ")
 
-    if 'y' in wastage.lower():
-        litresByCoat *= 1.1
+        if 'y' in wastage.lower():
+            litresByCoat *= 1.1
 
-    litres = round(litresByCoat, 2) if litresByCoat >= 0 else 0
-else:
-    litres = 0
+        litres = round(litresByCoat, 2)
+        
+        # (litres, cost)
+        paints = {
+            "Dulux": ((1, 17), (2.5, 22), (5, 34)),
+            "Dulux Trade": ((1, 20), (2.5, 34), (5, 60)),
+            "Crown": ((1, 20.56), (2.5, 27.42), (5, 56.44)),
+        }
 
-if litres > 0:
-    print(f"\nTo cover this area, you need {litres} litre{"s" if litres != 1 else ""} of paint")
-    # (litres, cost)
-    paints = {
-        "Dulux": ((1, 17), (2.5, 22), (5, 34)),
-        "Dulux Trade": ((1, 20), (2.5, 34), (5, 60)),
-        "Crown": ((1, 20.56), (2.5, 27.42), (5, 56.44)),
-    }
-
-    brand = getBrandSuggestion(paints, litres)
-    suggestion, cost = getPaintSuggestion(paints, brand, litres)
-    
-    brand = suggestion[0]
-    volume = suggestion[1]
-    cans = suggestion[2]
-    
-    print(f"\nIt is suggested that you buy {cans} can{"s" if cans > 1 else ""} of {volume}L {brand} paint for £{cost}")
-else:
-    print(f"\nYou do not need to buy any paint")
+        brand = getBrandSuggestion(paints, litres)
+        suggestion, cost = getPaintSuggestion(paints, brand, litres)
+        
+        brand = suggestion[0]
+        volume = suggestion[1]
+        cans = suggestion[2]
+        
+        print(f"\nTo cover this area, you need {litres} litre{"s" if litres != 1 else ""} of paint")
+        print(f"\nIt is suggested that you buy {cans} can{"s" if cans > 1 else ""} of {volume}L {brand} paint for £{cost}")
+    else:
+        print(f"\nYou do not need to buy any paint")
