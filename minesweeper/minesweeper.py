@@ -2,17 +2,14 @@ import random
 
 # Generate the apparent board of a given width and height, with the default value in each cell
 def generate_apparent_board(width, height):
-    global DEFAULT_VALUE
     return [[DEFAULT_VALUE for x in range(width)] for y in range(height)]
 
 # Generate the real board of a given width and height, with the empty value in each cell
 def generate_real_board(width, height):
-    global EMPTY_VALUE
     return [[EMPTY_VALUE for x in range(width)] for y in range(height)]
 
 # Place a given number of mines randomly on a given board
 def place_bombs(board, bombs):
-    global MINE_VALUE
     max_col = len(board[0]) - 1
     max_row = len(board) - 1
     
@@ -62,11 +59,11 @@ def generate_boards():
 
 # Print the instructions to the user 
 def print_instructions(invalid_format=False):
-    global FLAG_VALUE
     if invalid_format:
         print("\nPlease format your action according the instructions below:")
     print("1. To select a coordinate, enter the row and column (example: 2 3)")
-    print(f"2. To flag a coordinate, enter the row and column, followed by '{FLAG_VALUE}' (example: 2 3 {FLAG_VALUE})")
+    print(f"2. To flag or unflag a coordinate, enter the row and column, followed by '{FLAG_VALUE}' (example: 2 3 {FLAG_VALUE})")
+    print(f"3. To view these instructions again, enter 'help'")
 
 # Display the board to the user
 def display_board(board):
@@ -91,7 +88,6 @@ def display_board(board):
 
 # Get the users action
 def get_user_action(max_col, max_row):
-    global FLAG_VALUE
     while True:
         action = input("\nAction: ").strip()
         try:
@@ -99,10 +95,10 @@ def get_user_action(max_col, max_row):
                 print_instructions()
             else:
                 valid = True
-                
-                parts = action.split(" ")
-                row = int(parts[0].strip())
-                col = int(parts[1].strip())
+                split = action.split(" ")
+                split = [x for x in split if x != '']
+                row = int(split[0].strip())
+                col = int(split[1].strip())
 
                 if valid and (row < 1 or row > max_row):
                     print(f'Please enter a row value between 1 and {max_row}')
@@ -112,9 +108,8 @@ def get_user_action(max_col, max_row):
                     print(f'Please enter a column value between 1 and {max_col}')
                     valid = False
 
-                
-                if valid and len(parts) > 2:
-                    if parts[2].strip().lower() == FLAG_VALUE.lower():
+                if valid and len(split) > 2:
+                    if split[2].strip().lower() == FLAG_VALUE.lower():
                         flag = True
                     else:
                         print_instructions(True)
@@ -128,9 +123,7 @@ def get_user_action(max_col, max_row):
             print_instructions(True)
 
 # Get the number of adjacent mines to a given coordinate
-def get_adjacent_mines(board, col, row):
-    global MINE_VALUE
-    
+def get_adjacent_mines(board, col, row):    
     adjacent_mines = 0
     
     for i in range(-1, 2): # Loop through the 3x3 grid around the coordinate
@@ -143,7 +136,6 @@ def get_adjacent_mines(board, col, row):
 
 # Get the number of adjacent empty spaces to a given coordinate
 def get_adjacent_empty(board, col, row):
-    global EMPTY_VALUE
     
     adjacent_empty = 0
     
@@ -155,11 +147,8 @@ def get_adjacent_empty(board, col, row):
     
     return adjacent_empty
 
+# Reveal all empty spaces adjacent to a given coordinate
 def reveal_empty(board, apparent_board, col, row):
-    global DEFAULT_VALUE
-    global EMPTY_VALUE
-    global FLAG_VALUE
-    
     if apparent_board[row][col] == FLAG_VALUE:
         return apparent_board
     
@@ -181,10 +170,25 @@ def reveal_empty(board, apparent_board, col, row):
     
     return apparent_board
     
+# Check if the user has won
+def check_win(apparent_board, real_board):
+    for i in range(len(apparent_board)):
+        for j in range(len(apparent_board[0])):
+            if apparent_board[i][j] == DEFAULT_VALUE and real_board[i][j] != MINE_VALUE:
+                return False
+    return True
+
+# Reveal all mines on the board
+def reveal_mines(apparent_board, real_board):
+    for i in range(len(real_board)):
+        for j in range(len(real_board[0])):
+            if real_board[i][j] == MINE_VALUE:
+                apparent_board[i][j] = MINE_VALUE
+    return apparent_board
 
 # Run the game
 def minesweeper():
-    apparent_board, real_board, mines = generate_boards()
+    apparent_board, real_board, flags = generate_boards()
     print()
     print_instructions()
     
@@ -192,26 +196,46 @@ def minesweeper():
     max_row = len(real_board)
     
     mine_hit = False
+    won = False
     
-    while not mine_hit:
-        display_board(real_board)
+    while not mine_hit and not won:
+        print(f"\nFlags left: {flags}")
+        # display_board(real_board)
         display_board(apparent_board)
         col, row, flag = get_user_action(max_col, max_row)
         
-        if type(apparent_board[row][col]) == int:
+        if type(apparent_board[row][col]) == int or apparent_board[row][col] == EMPTY_VALUE:
             print("This coordinate has already been revealed!")
+        elif flag:
+            if flags == 0:
+                print("You have no flags left!")
+            elif apparent_board[row][col] == DEFAULT_VALUE:
+                apparent_board[row][col] = FLAG_VALUE
+                flags -= 1
+            else:
+                apparent_board[row][col] = DEFAULT_VALUE
+                flags += 1
+        elif apparent_board[row][col] == FLAG_VALUE:
+            print("This coordinate is flagged!")
         else:
             if real_board[row][col] == MINE_VALUE:
-                print("You lose!")
                 mine_hit = True
             else:
                 apparent_board[row][col] = EMPTY_VALUE
                 apparent_board = reveal_empty(real_board, apparent_board, col, row)
-    
+                won = check_win(apparent_board, real_board)
+                
+    if mine_hit:
+        print("You hit a mine!")
+        apparent_board = reveal_mines(apparent_board, real_board)
+        display_board(apparent_board)
+    elif won:
+        print("You win!")
+        apparent_board = reveal_mines(apparent_board, real_board)
+        display_board(apparent_board)
         
-
 if __name__ == "__main__":
-    DEFAULT_VALUE = "X"
+    DEFAULT_VALUE = "*"
     MINE_VALUE = "M"
     EMPTY_VALUE = " "
     FLAG_VALUE = "F"
