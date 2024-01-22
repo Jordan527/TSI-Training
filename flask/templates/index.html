@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Weather Search{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link {% if action == '/city' %}active{% endif %}" aria-current="page" href="/city">City</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if action == '/coords' %}active{% endif %}" aria-current="page" href="/coords">Coordinates</a>
+            </li>
+          </ul>
+        <form method="POST" action="{{action}}">
+            <div class="row g-3 mt-1">
+                {% for field in form %}
+                <div class="col d-flex flex-column">
+                    {% for error in field.errors %}
+                    <span class="text-danger">{{error}}</span>
+                    {% endfor %}
+                    <span class="mt-auto">{{ field}}</span>
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
