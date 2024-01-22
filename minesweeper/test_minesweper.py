@@ -1,131 +1,123 @@
 import pytest
-from minesweeper import generate_apparent_board, generate_real_board, place_bombs, generate_boards, get_adjacent_mines, reveal_empty, check_win, reveal_mines
+from minesweeper import Board
 
-def test_generate_apparent_board():
-    apparent_board = generate_apparent_board(5, 5)
-    assert len(apparent_board) == 5
-    assert len(apparent_board[0]) == 5
-    for i in range(len(apparent_board)):
-        for j in range(len(apparent_board[0])):
-            assert apparent_board[i][j] == '*'
-            
-def test_generate_real_board():
-    real_board = generate_real_board(5, 5)
-    assert len(real_board) == 5
-    assert len(real_board[0]) == 5
-    for i in range(len(real_board)):
-        for j in range(len(real_board[0])):
-            assert real_board[i][j] == ' '
-            
-def test_place_bombs():
-    real_board = generate_real_board(5, 5)
-    real_board = place_bombs(real_board, 5)
-    assert len(real_board) == 5
-    assert len(real_board[0]) == 5
-    count = 0
-    for i in range(len(real_board)):
-        for j in range(len(real_board[0])):
-            if real_board[i][j] == 'M':
-                count += 1
-    assert count == 5
-
-def test_generate_boards():
-    apparent_board, real_board, flags = generate_boards(1)
-    assert len(apparent_board) == 9
-    assert len(apparent_board[0]) == 9
-    assert len(real_board) == 9
-    assert len(real_board[0]) == 9
-    assert flags == 10
+def test_generate_grid():
+    board = Board(1)
+    board.generate_grid()
+    assert board.width == 9
+    assert board.height == 9
+    assert board.bombs == 10
+    
+    board = Board(2)
+    board.generate_grid()
+    assert board.width == 16
+    assert board.height == 16
+    assert board.bombs == 40
+    
+    board = Board(3)
+    board.generate_grid()
+    assert board.width == 16
+    assert board.height == 30
+    assert board.bombs == 99
     
 def test_get_adjacent_mines():
-    board = generate_real_board(5, 5)
-    board[2][1] = 'M'
-    board[2][2] = 'M'
-    board = [
-        [' ', ' ', ' ', ' ', ' '],
-        [' ', ' ', ' ', ' ', ' '],
-        [' ', 'M', 'M', ' ', ' '],
-        [' ', ' ', ' ', ' ', ' '],
-        [' ', ' ', ' ', ' ', ' ']
-    ]
-    assert get_adjacent_mines(board, 0, 0) == 0
-    assert get_adjacent_mines(board, 0, 1) == 1
-    assert get_adjacent_mines(board, 0, 2) == 1
-    assert get_adjacent_mines(board, 1, 1) == 2
+    board = Board(1)
+    board.generate_grid()
+    board.grid[2][1].set_value('M')
+    board.grid[2][2].set_value('M')
+    assert board.get_adjacent_mines(0, 0) == 0
+    assert board.get_adjacent_mines(0, 1) == 1
+    assert board.get_adjacent_mines(0, 2) == 1
+    assert board.get_adjacent_mines(1, 1) == 2
     
 def test_reveal_empty():
-    apparent_board = generate_apparent_board(5, 5)
-    real_board = generate_real_board(5, 5)
-    real_board[2][1] = 'M'
-    real_board[2][2] = 'M'
+    board = Board(1)
+    board.generate_grid()
+    board.grid[2][1].set_value('M')
+    board.grid[2][2].set_value('M')
     
-    apparent_board = reveal_empty(real_board, apparent_board, 0, 0)
+    board.reveal_empty(0, 0)
     expected_board = [
-        [' ', ' ', ' ', ' ', ' '],
-        [1, 2, 2, 1, ' '],
-        ['*', '*', '*', 1, ' '],
-        [1, 2, 2, 1, ' '],
-        [' ', ' ', ' ', ' ', ' ']
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [1, 2, 2, 1, ' ', ' ', ' ', ' ', ' '],
+        ['*', '*', '*', 1, ' ', ' ', ' ', ' ', ' '],
+        [1, 2, 2, 1, ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ]
-    assert apparent_board == expected_board
     
-    apparent_board = generate_apparent_board(5, 5)
-    real_board[4][4] = 'M'
-    apparent_board = reveal_empty(real_board, apparent_board, 0, 0)
+    actual_board = []
+    for row in board.grid:
+        actual_row = [cell.get_value() if cell.get_revealed() else board.default_value for cell in row]
+        actual_board.append(actual_row)
+    assert actual_board == expected_board
+    
+def test_flag():
+    board = Board(1)
+    board.generate_grid()
+    
+    board.flag(0, 0)
+    assert board.grid[0][0].flagged == True
+    assert board.flags == board.bombs - 1
+    
+    board.flag(0, 0)
+    assert board.grid[0][0].flagged == False
+    assert board.flags == board.bombs
+    
+def test_lose():
+    board = Board(1)
+    board.generate_grid()
+    board.grid[2][1].set_value('M')
+    
+    assert board.check_lose() == False
+    board.grid[2][1].set_revealed(True)
+    assert board.check_lose() == True
+    
+def test_click():
+    board = Board(1)
+    board.generate_grid()
+    board.grid[2][1].set_value('M')
+    board.grid[2][2].set_value('M')
+    
+    board.click(0, 0)
     expected_board = [
-        [' ', ' ', ' ', ' ', ' '],
-        [1, 2, 2, 1, ' '],
-        ['*', '*', '*', 1, ' '],
-        ['*', '*', '*', '*', 1],
-        ['*', '*', '*', '*', '*']
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [1, 2, 2, 1, ' ', ' ', ' ', ' ', ' '],
+        ['*', '*', '*', 1, ' ', ' ', ' ', ' ', ' '],
+        [1, 2, 2, 1, ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+        [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
     ]
-    assert apparent_board == expected_board
     
-def test_check_win():
-    apparent_board = generate_apparent_board(5, 5)
-    real_board = generate_real_board(5, 5)
-    real_board[2][1] = 'M'
-    real_board[2][2] = 'M'
-    apparent_board = reveal_empty(real_board, apparent_board, 0, 0)
-    assert check_win(apparent_board, real_board) == False
+    actual_board = []
+    for row in board.grid:
+        actual_row = [cell.get_value() if cell.get_revealed() else board.default_value for cell in row]
+        actual_board.append(actual_row)
+    assert actual_board == expected_board
     
-    apparent_board = reveal_empty(real_board, apparent_board, 0, 2)
-    assert check_win(apparent_board, real_board) == True
+    board.flag(1, 2)
+    board.click(1, 2)
+    assert board.check_lose() == False
     
-def test_reveal_mines():
-    board = generate_apparent_board(5, 5)
-    real_board = generate_real_board(5, 5)
-    real_board[2][1] = 'M'
-    real_board[2][2] = 'M'
-    apparent_board = reveal_mines(board, real_board)
-    expected_board = [
-        ['*', '*', '*', '*', '*'],
-        ['*', '*', '*', '*', '*'],
-        ['*', 'M', 'M', '*', '*'],
-        ['*', '*', '*', '*', '*'],
-        ['*', '*', '*', '*', '*']
-    ]
-    assert apparent_board == expected_board
-
-    board = generate_apparent_board(5, 5)
-    apparent_board = reveal_empty(real_board, board, 0, 0)
-    new_apparent_board = reveal_mines(apparent_board, real_board)
-    expected_board = [
-        [' ', ' ', ' ', ' ', ' '],
-        [1, 2, 2, 1, ' '],
-        ['*', 'M', 'M', 1, ' '],
-        [1, 2, 2, 1, ' '],
-        [' ', ' ', ' ', ' ', ' ']
-    ]
-    assert new_apparent_board == expected_board
+    board.flag(1, 2)
+    board.click(1, 2)
+    assert board.check_lose() == True
     
-    apparent_board[2][0] = 'F'
-    new_apparent_board = reveal_mines(apparent_board, real_board)
-    expected_board = [
-        [' ', ' ', ' ', ' ', ' '],
-        [1, 2, 2, 1, ' '],
-        ['F', 'M', 'M', 1, ' '],
-        [1, 2, 2, 1, ' '],
-        [' ', ' ', ' ', ' ', ' ']
-    ]
-    assert new_apparent_board == expected_board
+def test_check_won():
+    board = Board(1)
+    board.generate_grid()
+    board.grid[2][1].set_value('M')
+    board.grid[2][2].set_value('M')
+    assert board.check_won() == False
+    
+    board.reveal_empty(0, 0)
+    assert board.check_won() == False
+    
+    board.reveal_empty(0, 2)
+    assert board.check_won() == True
