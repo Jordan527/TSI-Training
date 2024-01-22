@@ -7,13 +7,20 @@
     <div class="card-body">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-              <a class="nav-link {% if action == '/city' %}active{% endif %}" aria-current="page" href="/city">City</a>
+                <a class="nav-link {% if action == '/city' %}active{% endif %}" aria-current="page"
+                    href="/city">City</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {% if action == '/coords' %}active{% endif %}" aria-current="page" href="/coords">Coordinates</a>
+                <a class="nav-link {% if action == '/coords' %}active{% endif %}" aria-current="page"
+                    href="/coords">Coordinates</a>
             </li>
-          </ul>
-        <form method="POST" action="{{action}}">
+        </ul>
+        {% if error %}
+        <div class="alert alert-danger mt-2 mb-0" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+        <form method="POST" action="{{action}}" novalidate>
             <div class="row g-3 mt-1">
                 {% for field in form %}
                 <div class="col d-flex flex-column">
@@ -27,5 +34,21 @@
             </div>
         </form>
     </div>
+</div>
+
+<h3 class="my-3">{% if weather.name %}{{ weather.name }}{% else %}{{ weather.longitude }}, {{ weather.latitude }}{% endif %}</h3>
+<div class="row">
+    {% for day in weather.daily %}
+    <div class="col-12 col-sm-3 col-xxl-auto">
+        <div class="card">
+            <div class="card-body d-flex flex-column">
+                <p class="text-center fs-4 m-0">{{ day.date }}</p>
+                <img src="https://openweathermap.org/img/wn/{{day.icon}}@2x.png" class="mx-auto">
+                <p class="text-center m-0">Highs: {{ day.highs }}&degC</p>
+                <p class="text-center m-0">Lows: {{ day.lows }}&degC</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
