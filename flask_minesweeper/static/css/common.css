@@ -1,7 +1,8 @@
 .board {
     display: inline-block;
-    margin: 20px;
+    margin: 10px;
 }
+
 .cell {
     width: 30px;
     height: 30px;
@@ -14,9 +15,10 @@
  
     /* Default color for unrevealed tiles */
     background-color: #eee;
- 
-    /* Default color for unrevealed tile text */
-    color: #333;
+}
+
+.cell:hover {
+    border-color: #000;
 }
 
 .revealed {

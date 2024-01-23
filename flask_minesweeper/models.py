@@ -12,10 +12,11 @@ class Board():
                 self.height = 16
                 self.bombs = 40
             case 3:
-                self.width = 16
-                self.height = 30
+                self.width = 30
+                self.height = 16
                 self.bombs = 99
         self.flags = self.bombs
+        self.clicked = False
         
     # generate grid of Cell objects
     def generate_grid(self):
@@ -61,9 +62,9 @@ class Board():
                 cell.set_value("empty")
                 for i in range(-1, 2): # Loop through the 3x3 grid around the coordinate
                     for j in range(-1, 2): # Loop through the 3x3 grid around the coordinate
-                        if i == 0 or j == 0: # Skip the coordinate itself and the diagonals
-                            if (col + i >= 0 and col + i < self.width) and (row + j >= 0 and row + j < self.height):
-                                self.reveal_empty(col + i, row + j)
+                        # if i == 0 or j == 0: # Skip the coordinate itself and the diagonals
+                        if (col + i >= 0 and col + i < self.width) and (row + j >= 0 and row + j < self.height):
+                            self.reveal_empty(col + i, row + j)
             else:
                 cell.set_value(self.get_adjacent_mines(col, row))
             return None
@@ -73,10 +74,21 @@ class Board():
         cell = self.grid[row][col]
         if not cell.get_revealed() and not cell.flagged:
             if cell.get_value() == "mine":
-                cell.set_revealed(True)
+                if not self.clicked: # If the first click is a mine, replace the bombs
+                    self.replace_bombs(col, row)
+                    self.clicked = True
+                else:
+                    cell.set_revealed(True)
             else:
+                self.clicked = True
                 self.reveal_empty(col, row)
-                  
+    
+    # replace the bombs if the first click is a bomb          
+    def replace_bombs(self, col, row):
+        self.generate_grid()
+        self.place_bombs()
+        self.click(col, row)
+        
     # flag a given coordinate
     def flag(self, col, row):
         cell = self.grid[row][col]

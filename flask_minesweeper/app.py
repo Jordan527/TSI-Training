@@ -15,16 +15,19 @@ def board(difficulty):
     board = Board(difficulty)
     board.generate_grid()
     board.place_bombs()
+    board.display_board(True)
     return board.to_json()
 
 @app.route('/move/<int:row>/<int:col>', methods=['GET'])
 def move(row, col):
     global board
     board.click(col, row)
+    board.display_board(True)
     return board.to_json()
 
 @app.route('/flag/<int:row>/<int:col>', methods=['GET'])
 def flag(row, col):
     global board
     board.flag(col, row)
+    board.display_board(True)
     return board.to_json()

@@ -16,8 +16,8 @@ def test_generate_grid():
     
     board = Board(3)
     board.generate_grid()
-    assert board.width == 16
-    assert board.height == 30
+    assert board.width == 30
+    assert board.height == 16
     assert board.bombs == 99
     
 def test_place_bombs():
@@ -54,7 +54,34 @@ def test_get_adjacent_mines():
     assert board.get_adjacent_mines(0, 1) == 1
     assert board.get_adjacent_mines(0, 2) == 1
     assert board.get_adjacent_mines(1, 1) == 2
+
+def test_click():
+    board = Board(1)
+    board.generate_grid()
+    board.grid[2][1].set_value('mine')
     
+    assert board.check_lose() == False
+    
+    board.click(1, 2) # click on the mine
+    assert board.check_lose() == False # should not lose on first click
+    
+    mines = 0
+    mine_x = 0
+    mine_y = 0
+    for i in range(board.height):
+        for j in range(board.width):
+            cell = board.grid[i][j]
+            if cell.get_value() == 'mine':
+                mines += 1
+                mine_x = j
+                mine_y = i
+                
+    assert mines == 10 # Should still have the original number of mines
+    
+    board.click(mine_x, mine_y) # click on a mine
+    assert board.check_lose() == True # should lose on second click
+    
+
 def test_flag():
     board = Board(1)
     board.generate_grid()
