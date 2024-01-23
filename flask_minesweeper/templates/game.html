@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Minesweeper{% endblock %}
+
+{% block content %}
+    <h1>Minesweeper</h1>
+    <div id="game_options">
+        <button onclick="setDifficulty(1)">Beginner</button>
+        <button onclick="setDifficulty(2)">Intermediate</button>
+        <!-- <button onclick="setDifficulty(3)">Advanced</button> -->
+    </div>
+    <button id="reset_button" style="display: none;" onclick="reset()">Restart</button>
+    <h4 id="flags"></h4>
+    <div id="board" class="board"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/game.js') }}"></script>
+{% endblock %}

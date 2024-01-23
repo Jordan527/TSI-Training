@@ -1,3 +1,4 @@
 minesweeper/.venv/
-flask/.venv/
-flask/keys.py
+flask_minesweeper/.venv/
+flask_weather_app/.venv/
+flask_weather_app/keys.py
