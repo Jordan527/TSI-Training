@@ -1,0 +1,7 @@
+.hour-pill {
+    box-shadow: 0 0 0 1px #ccc;
+}
+
+.hour-pill:hover {
+    box-shadow: 0 0 0 1px #ccc, 0 0 0 3px #007bff;
+}

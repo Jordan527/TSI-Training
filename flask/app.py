@@ -26,14 +26,15 @@ def city():
         if form.validate():
             city = request.form['city']
             weather = get_weather_from_city(city)
-            if not weather:
+            if not weather: # If the city is invalid
                 return render_template('index.html', form=form, action='/city', weather=get_weather_from_file(), error='City not found')
             weather = format_weather(weather)
-            with open('weather.json', 'w') as file:
+            with open('weather.json', 'w') as file: # Save the weather data to the file
                 json.dump(weather, file)
             return render_template('index.html', form=form, action='/city', weather=weather)
+        # If the form is not valid
         return render_template('index.html', form=form, action='/city', weather=get_weather_from_file())
-    else:
+    else: # If the request is GET
         weather = get_weather_from_file()
     return render_template('index.html', form=form, action='/city', weather=weather)
 
@@ -45,46 +46,49 @@ def coords():
             lat = request.form['lat']
             lon = request.form['lon']
             weather = get_weather_from_coords(lon, lat)
-            if not weather:
+            if not weather: # If the coordinates are invalid
                 return render_template('index.html', form=form, action='/coords', weather=get_weather_from_file(), error='Coordinates not found')
             weather = format_weather(weather)
-            with open('weather.json', 'w') as file:
+            with open('weather.json', 'w') as file: # Save the weather data to the file
                 json.dump(weather, file)
             return render_template('index.html', form=form, action='/coords', weather=weather)
+        # If the form is not valid
         return render_template('index.html', form=form, action='/coords', weather=get_weather_from_file())
-    else:
+    else: # If the request is GET
         weather = get_weather_from_file()
     return render_template('index.html', form=form, action='/coords', weather=weather)
 
 # Get the weather from the city
 def get_weather_from_city(city):
+    # Get the weather from the city name
     response = requests.get(f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={appid}').json()
     if response['cod'] == '404':
         return None
     city = response['name']
+    # Get the weather from the coordinates as this gives more accurate data
     lon = response['coord']['lon']
     lat = response['coord']['lat']
-    response = requests.get(f'https://api.openweathermap.org/data/3.0/onecall?lon={lon}&lat={lat}&exclude=minutely,hourly&units=metric&appid={appid}').json()
+    response = requests.get(f'https://api.openweathermap.org/data/3.0/onecall?lon={lon}&lat={lat}&exclude=minutely&units=metric&appid={appid}').json()
     response['name'] = city
     return response
 
 # Get the weather from the coordinates
 def get_weather_from_coords(lon, lat):
-    response = requests.get(f'https://api.openweathermap.org/data/3.0/onecall?lon={lon}&lat={lat}&exclude=minutely,hourly&units=metric&appid={appid}').json()
+    response = requests.get(f'https://api.openweathermap.org/data/3.0/onecall?lon={lon}&lat={lat}&exclude=minutely&units=metric&appid={appid}').json()
     if 'cod' in response.keys() and response['cod'] == '400':
         return None
     city = get_city_name(lon, lat)
     response['name'] = city    
     return response
 
-# Get the weather from the file if the stored data is from today, otherwise get new data
+# Get the weather from the file if the stored data is from this hour, otherwise get new data
 def get_weather_from_file():
     weather = json.load(open('weather.json'))
     
-    first_day = weather['daily'][0]
-    first_day_date = datetime.datetime.strptime(first_day['date'], '%Y-%m-%d').strftime('%Y-%m-%d')
-    today = datetime.datetime.today().strftime('%Y-%m-%d')
-    if first_day_date != today:
+    first_hour = weather['hourly'][0]
+    first_hour_time = datetime.datetime.strptime(first_hour['date'], '%Y-%m-%d %H:%M').strftime('%Y-%m-%d %H')
+    now = datetime.datetime.now().strftime('%Y-%m-%d %H')
+    if first_hour_time != now:
         lon = weather['longitude']
         lat = weather['latitude']
         weather = get_weather_from_coords(lon, lat)
@@ -100,6 +104,7 @@ def format_weather(weather):
         'longitude': weather['lon'],
         'latitude': weather['lat'],
         'name': weather['name'],
+        'hourly': format_hours(weather['hourly']),
         'daily': format_days(weather['daily'])
     }
     return formatted
@@ -113,12 +118,25 @@ def get_city_name(lon, lat):
 def format_days(days):
     output = []
     for day in days:
+        dt = datetime.datetime.fromtimestamp(day['dt'])
         output.append({
-            'date': datetime.datetime.fromtimestamp(day['dt']).strftime('%Y-%m-%d'),
-            'lows': day['temp']['min'],
-            'highs': day['temp']['max'],
-            'description': day['weather'][0]['description'],
+            'date': dt.strftime('%Y-%m-%d'),
+            'day': dt.strftime('%A'),
+            'lows': int(round(day['temp']['min'], 0)),
+            'highs': int(round(day['temp']['max'], 0)),
             'icon': day['weather'][0]['icon']
         })
     return output
-    
+
+# Format the hours
+def format_hours(hours):
+    output = []
+    for hour in hours:
+        dt = datetime.datetime.fromtimestamp(hour['dt'])
+        output.append({
+            'date': dt.strftime('%Y-%m-%d %H:%M'),
+            'day': dt.strftime('%A')[0:3],
+            'temp': int(round(hour['temp'], 0)),
+            'icon': hour['weather'][0]['icon']
+        })
+    return output
