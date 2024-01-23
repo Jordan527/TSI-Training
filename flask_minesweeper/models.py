@@ -71,6 +71,7 @@ class Board():
     
     # reveal a given coordinate
     def click(self, col, row):
+        # TODO: If the first click is not a completely empty spot, move the bombs
         cell = self.grid[row][col]
         if not cell.get_revealed() and not cell.flagged:
             if cell.get_value() == "mine":

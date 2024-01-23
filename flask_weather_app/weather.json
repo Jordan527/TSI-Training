@@ -1,1 +1,353 @@
-{"longitude": -0.1257, "latitude": 51.5085, "name": "London", "hourly": [{"date": "2024-01-23 10:00", "day": "Tue", "temp": 8, "icon": "10d"}, {"date": "2024-01-23 11:00", "day": "Tue", "temp": 8, "icon": "10d"}, {"date": "2024-01-23 12:00", "day": "Tue", "temp": 8, "icon": "10d"}, {"date": "2024-01-23 13:00", "day": "Tue", "temp": 8, "icon": "10d"}, {"date": "2024-01-23 14:00", "day": "Tue", "temp": 9, "icon": "10d"}, {"date": "2024-01-23 15:00", "day": "Tue", "temp": 10, "icon": "04d"}, {"date": "2024-01-23 16:00", "day": "Tue", "temp": 11, "icon": "04d"}, {"date": "2024-01-23 17:00", "day": "Tue", "temp": 11, "icon": "04d"}, {"date": "2024-01-23 18:00", "day": "Tue", "temp": 12, "icon": "04n"}, {"date": "2024-01-23 19:00", "day": "Tue", "temp": 12, "icon": "04n"}, {"date": "2024-01-23 20:00", "day": "Tue", "temp": 12, "icon": "04n"}, {"date": "2024-01-23 21:00", "day": "Tue", "temp": 12, "icon": "04n"}, {"date": "2024-01-23 22:00", "day": "Tue", "temp": 12, "icon": "04n"}, {"date": "2024-01-23 23:00", "day": "Tue", "temp": 13, "icon": "04n"}, {"date": "2024-01-24 00:00", "day": "Wed", "temp": 13, "icon": "10n"}, {"date": "2024-01-24 01:00", "day": "Wed", "temp": 13, "icon": "04n"}, {"date": "2024-01-24 02:00", "day": "Wed", "temp": 12, "icon": "04n"}, {"date": "2024-01-24 03:00", "day": "Wed", "temp": 12, "icon": "04n"}, {"date": "2024-01-24 04:00", "day": "Wed", "temp": 11, "icon": "04n"}, {"date": "2024-01-24 05:00", "day": "Wed", "temp": 10, "icon": "04n"}, {"date": "2024-01-24 06:00", "day": "Wed", "temp": 10, "icon": "04n"}, {"date": "2024-01-24 07:00", "day": "Wed", "temp": 10, "icon": "04n"}, {"date": "2024-01-24 08:00", "day": "Wed", "temp": 9, "icon": "04n"}, {"date": "2024-01-24 09:00", "day": "Wed", "temp": 9, "icon": "04d"}, {"date": "2024-01-24 10:00", "day": "Wed", "temp": 9, "icon": "04d"}, {"date": "2024-01-24 11:00", "day": "Wed", "temp": 9, "icon": "04d"}, {"date": "2024-01-24 12:00", "day": "Wed", "temp": 10, "icon": "04d"}, {"date": "2024-01-24 13:00", "day": "Wed", "temp": 10, "icon": "04d"}, {"date": "2024-01-24 14:00", "day": "Wed", "temp": 10, "icon": "04d"}, {"date": "2024-01-24 15:00", "day": "Wed", "temp": 11, "icon": "04d"}, {"date": "2024-01-24 16:00", "day": "Wed", "temp": 10, "icon": "04d"}, {"date": "2024-01-24 17:00", "day": "Wed", "temp": 10, "icon": "04d"}, {"date": "2024-01-24 18:00", "day": "Wed", "temp": 10, "icon": "04n"}, {"date": "2024-01-24 19:00", "day": "Wed", "temp": 9, "icon": "04n"}, {"date": "2024-01-24 20:00", "day": "Wed", "temp": 9, "icon": "04n"}, {"date": "2024-01-24 21:00", "day": "Wed", "temp": 9, "icon": "04n"}, {"date": "2024-01-24 22:00", "day": "Wed", "temp": 8, "icon": "10n"}, {"date": "2024-01-24 23:00", "day": "Wed", "temp": 8, "icon": "10n"}, {"date": "2024-01-25 00:00", "day": "Thu", "temp": 8, "icon": "10n"}, {"date": "2024-01-25 01:00", "day": "Thu", "temp": 8, "icon": "10n"}, {"date": "2024-01-25 02:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 03:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 04:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 05:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 06:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 07:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 08:00", "day": "Thu", "temp": 8, "icon": "04n"}, {"date": "2024-01-25 09:00", "day": "Thu", "temp": 8, "icon": "04d"}], "daily": [{"date": "2024-01-23", "day": "Tuesday", "lows": 6, "highs": 13, "icon": "10d"}, {"date": "2024-01-24", "day": "Wednesday", "lows": 8, "highs": 13, "icon": "10d"}, {"date": "2024-01-25", "day": "Thursday", "lows": 8, "highs": 11, "icon": "10d"}, {"date": "2024-01-26", "day": "Friday", "lows": 6, "highs": 12, "icon": "10d"}, {"date": "2024-01-27", "day": "Saturday", "lows": 5, "highs": 8, "icon": "04d"}, {"date": "2024-01-28", "day": "Sunday", "lows": 7, "highs": 11, "icon": "04d"}, {"date": "2024-01-29", "day": "Monday", "lows": 5, "highs": 9, "icon": "10d"}, {"date": "2024-01-30", "day": "Tuesday", "lows": 3, "highs": 7, "icon": "04d"}]}
+{
+    "longitude": -0.1257,
+    "latitude": 51.5085,
+    "name": "London",
+    "hourly": [
+        {
+            "date": "2024-01-23 15:00",
+            "day": "Tue",
+            "temp": 11,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-23 16:00",
+            "day": "Tue",
+            "temp": 11,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-23 17:00",
+            "day": "Tue",
+            "temp": 11,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-23 18:00",
+            "day": "Tue",
+            "temp": 11,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-23 19:00",
+            "day": "Tue",
+            "temp": 12,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-23 20:00",
+            "day": "Tue",
+            "temp": 12,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-23 21:00",
+            "day": "Tue",
+            "temp": 12,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-23 22:00",
+            "day": "Tue",
+            "temp": 12,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-23 23:00",
+            "day": "Tue",
+            "temp": 13,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 00:00",
+            "day": "Wed",
+            "temp": 13,
+            "icon": "10n"
+        },
+        {
+            "date": "2024-01-24 01:00",
+            "day": "Wed",
+            "temp": 13,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 02:00",
+            "day": "Wed",
+            "temp": 12,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 03:00",
+            "day": "Wed",
+            "temp": 12,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 04:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 05:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 06:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 07:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 08:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 09:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 10:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 11:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 12:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 13:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 14:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 15:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 16:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 17:00",
+            "day": "Wed",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-24 18:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 19:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 20:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 21:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 22:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-24 23:00",
+            "day": "Wed",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 00:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 01:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "10n"
+        },
+        {
+            "date": "2024-01-25 02:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "10n"
+        },
+        {
+            "date": "2024-01-25 03:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 04:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 05:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 06:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 07:00",
+            "day": "Thu",
+            "temp": 8,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 08:00",
+            "day": "Thu",
+            "temp": 9,
+            "icon": "04n"
+        },
+        {
+            "date": "2024-01-25 09:00",
+            "day": "Thu",
+            "temp": 9,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-25 10:00",
+            "day": "Thu",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-25 11:00",
+            "day": "Thu",
+            "temp": 10,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-25 12:00",
+            "day": "Thu",
+            "temp": 11,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-25 13:00",
+            "day": "Thu",
+            "temp": 11,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-25 14:00",
+            "day": "Thu",
+            "temp": 11,
+            "icon": "04d"
+        }
+    ],
+    "daily": [
+        {
+            "date": "2024-01-23",
+            "day": "Tuesday",
+            "lows": 6,
+            "highs": 13,
+            "icon": "10d"
+        },
+        {
+            "date": "2024-01-24",
+            "day": "Wednesday",
+            "lows": 8,
+            "highs": 13,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-25",
+            "day": "Thursday",
+            "lows": 8,
+            "highs": 12,
+            "icon": "10d"
+        },
+        {
+            "date": "2024-01-26",
+            "day": "Friday",
+            "lows": 6,
+            "highs": 12,
+            "icon": "10d"
+        },
+        {
+            "date": "2024-01-27",
+            "day": "Saturday",
+            "lows": 5,
+            "highs": 8,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-28",
+            "day": "Sunday",
+            "lows": 7,
+            "highs": 11,
+            "icon": "04d"
+        },
+        {
+            "date": "2024-01-29",
+            "day": "Monday",
+            "lows": 7,
+            "highs": 10,
+            "icon": "10d"
+        },
+        {
+            "date": "2024-01-30",
+            "day": "Tuesday",
+            "lows": 6,
+            "highs": 12,
+            "icon": "10d"
+        }
+    ]
+}

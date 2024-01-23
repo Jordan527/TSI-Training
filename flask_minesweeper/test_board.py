@@ -81,7 +81,6 @@ def test_click():
     board.click(mine_x, mine_y) # click on a mine
     assert board.check_lose() == True # should lose on second click
     
-
 def test_flag():
     board = Board(1)
     board.generate_grid()
